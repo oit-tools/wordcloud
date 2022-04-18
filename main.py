@@ -11,15 +11,14 @@ import unicodedata
 def get_tweet():
     tweet_list = list()
     token = None
-    flag = False
-
     client = tweepy.Client(bearer_token=os.environ["BEARER_TOKEN"])
-    while flag is False:
+
+    while True:
         tweets = client.get_list_tweets(
             id="1238737475306020865", pagination_token=token)
 
-        for j in range(len(tweets[0])):
-            data = (tweets[0][j].text)
+        for i in range(len(tweets[0])):
+            data = (tweets[0][i].text)
             if "RT" in data:  # RTを除外
                 continue
             data = re.sub(r"[\n\u3000]", "", data)  # 改行と全角スペースを除外
@@ -31,26 +30,25 @@ def get_tweet():
         try:
             token = ((tweets[3])["next_token"])
         except KeyError:
-            flag = True
+            break
 
     tweet = " ".join(tweet_list)
 
     return tweet
 
 
+# 形態素解析
 def get_word(text):
-    mecab = MeCab.Tagger()
-    parse = mecab.parse(text)
-
-    # 形態素解析
-    word_list = list()
+    parse = MeCab.Tagger().parse(text)
     lines = parse.splitlines()
+    word_list = list()
+
     for line in lines:
-        items = re.split("[\t,]", line)
+        item = re.split("[\t,]", line)
         # 名詞のみ保存
-        if (len(items) >= 2 and items[1] != "名詞") or items[0] == "EOS":
+        if (len(item) >= 2 and item[1] != "名詞") or item[0] == "EOS":
             continue
-        word_list.append(items[0])
+        word_list.append(item[0])
 
     word = " ".join(word_list)
 
