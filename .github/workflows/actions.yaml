@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Create dot env file
-      - shell: bash
+        shell: bash
         run: |
           touch .env
           echo "CK=${{ secrets.CK }}" >> .env
