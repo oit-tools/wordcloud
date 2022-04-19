@@ -24,7 +24,7 @@ jobs:
       - name: Set current datetime as env variable
         env:
           TZ: 'Asia/Tokyo'
-        run: echo "CURRENT_DATETIME=$(date +'%Y_%m_%d')" >> $GITHUB_ENV
+        run: echo "CURRENT_DATETIME=$(date +'%Y_%m_%d_%h')" >> $GITHUB_ENV
 
       - name: Setup Python
         uses: actions/setup-python@v2
