@@ -58,7 +58,8 @@ def get_word(text):
 def main():
     load_dotenv()
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
-    DATE = datetime.datetime.now().strftime("%Y_%m_%d")
+    DATE = datetime.datetime.now(datetime.timezone(
+        datetime.timedelta(hours=+9))).strftime("%Y_%m_%d")
 
     data = get_tweet()
     text = unicodedata.normalize("NFKC", data)
