@@ -66,11 +66,9 @@ def post_tweet(date):
     img = "./img/" + date + ".png"
 
     # 年月日のフォーマットを変更
+    date = date.replace("_0", "_")
     date = date.split("_")
-    date = date[0] + "年" + \
-        date[1].replace("0", "") + "月" + \
-        date[2].replace("0", "") + "日" + \
-        date[3].replace("0", "") + "時"
+    date = date[0] + "年" + date[1] + "月" + date[2] + "日" + date[3] + "時"
 
     text = date + "のWord Cloudです"
     api.update_status_with_media(text, filename=img)
