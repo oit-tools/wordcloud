@@ -20,7 +20,7 @@ UniDicをダウンロードする
 python -m unidic download
 ```
 
-main.pyと同じディレクトリに```.env```ファイルを作成  
+generate.pyと同じディレクトリに```.env```ファイルを作成  
 ```.env```ファイルに  
 
 ```text
@@ -30,10 +30,10 @@ BT=取得したBearer token
 を記入し保存する。
 
 ```bash
-py ./main.py
+py ./generate.py
 ```
 
-main.pyを動作させるとツイートを自動で取得し、形態素解析した後Word Cloudが./img内に画像として生成される。  
+generate.pyを動作させるとツイートを自動で取得し、形態素解析した後Word Cloudが./img内に画像として生成される。  
 
 ## Misc
 
