@@ -1,5 +1,8 @@
 # OIT Word Cloud
 
+generate.pyでWord Cloudを生成し、bot.pyで自動投稿を行います。  
+bot.pyを動作させるためにはTwitter API v1(Elevated Access)が必要です。  
+
 **各自でBearer tokenを用意してください**  
 [Twitter API v2の申請とBearer tokenの取得方法](https://wporz.com/twitterapi-apikey-accesstoken/)
 
@@ -21,7 +24,7 @@ main.pyと同じディレクトリに```.env```ファイルを作成
 ```.env```ファイルに  
 
 ```text
-BEARER_TOKEN=取得したBearer token
+BT=取得したBearer token
 ```
 
 を記入し保存する。

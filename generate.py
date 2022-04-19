@@ -11,7 +11,7 @@ import unicodedata
 def get_tweet():
     tweet_list = list()
     token = None
-    client = tweepy.Client(bearer_token=os.environ["BEARER_TOKEN"])
+    client = tweepy.Client(bearer_token=os.environ["BT"])
 
     while True:
         tweets = client.get_list_tweets(
