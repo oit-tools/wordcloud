@@ -55,11 +55,32 @@ def get_word(text):
     return word
 
 
+def post_tweet(date):
+    # APIキーの読み込み
+    load_dotenv()
+    auth = tweepy.OAuthHandler(os.environ["CK"], os.environ["CS"])
+    auth.set_access_token(os.environ["AT"], os.environ["ATS"])
+    api = tweepy.API(auth)
+
+    # 画像のパスを取得
+    img = "./img/" + date + ".png"
+
+    # 年月日のフォーマットを変更
+    date = date.split("_")
+    date = date[0] + "年" + \
+        date[1].replace("0", "") + "月" + \
+        date[2].replace("0", "") + "日" + \
+        date[3].replace("0", "") + "時"
+
+    text = date + "のWord Cloudです"
+    api.update_status_with_media(text, filename=img)
+
+
 def main():
     load_dotenv()
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
     DATE = datetime.datetime.now(datetime.timezone(
-        datetime.timedelta(hours=+9))).strftime("%Y_%m_%d")
+        datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
     data = get_tweet()
     text = unicodedata.normalize("NFKC", data)
@@ -69,6 +90,8 @@ def main():
     wc = WordCloud(font_path=FONT_PATH, width=1000, height=800,
                    background_color="black").generate(word)
     wc.to_file("./img/" + DATE + ".png")
+
+    post_tweet(DATE)
 
 
 if __name__ == "__main__":

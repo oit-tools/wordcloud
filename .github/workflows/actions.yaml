@@ -1,7 +1,7 @@
 name: "word cloud"
 on:
   schedule:
-    - cron: "16 0 * * *" #毎日1時に実行(JST)
+    - cron: "0 * * * *" #毎時0分に実行
 
 jobs:
   build:
