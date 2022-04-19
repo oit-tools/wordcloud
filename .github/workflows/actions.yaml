@@ -11,6 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create dot env file
+      - shell: bash
+        run: |
+          touch .env
+          echo "CK=${{ secrets.CK }}" >> .env
+          echo "CS=${{ secrets.CS }}" >> .env
+          echo "AT=${{ secrets.AT }}" >> .env
+          echo "ATS=${{ secrets.ATS }}" >> .env
+          echo "BT=${{ secrets.BT }}" >> .env
+
       - name: Set current datetime as env variable
         env:
           TZ: 'Asia/Tokyo'
