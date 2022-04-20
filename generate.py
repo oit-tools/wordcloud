@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import unicodedata
 
 
-def get_tweet():
+def get_list_tweet():
     tweet_list = list()
     token = None
     client = tweepy.Client(bearer_token=os.environ["BT"])
@@ -29,6 +29,9 @@ def get_tweet():
             data = re.sub(r"@\S+", "", data)  # @を除外
             data = re.sub(r"#\S+", "", data)  # #を除外
             tweet_list.append(data)
+
+            if len(tweet_list) >= 150:
+                break
 
         try:
             token = ((tweets[3])["next_token"])
@@ -64,7 +67,7 @@ def main():
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
-    data = get_tweet()
+    data = get_list_tweet()
     text = unicodedata.normalize("NFKC", data)
     word = get_word(text)
 
