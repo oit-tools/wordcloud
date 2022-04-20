@@ -37,6 +37,6 @@ jobs:
           pip install -r ./requirements.txt
           python -m unidic download
 
-      - name: Run main.py
+      - name: Run bot.py
         run: |
-          python ./main.py
+          python ./bot.py
