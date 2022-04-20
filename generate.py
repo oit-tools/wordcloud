@@ -52,7 +52,7 @@ def get_word(text):
     for line in lines:
         item = re.split("[\t,]", line)
         # 名詞のみ保存
-        if (len(item) >= 2 and item[1] != "名詞") or item[0] == "EOS":
+        if (len(item) >= 2 and item[1] not in ["名詞", "形容詞", "形容動詞"]) or item[0] == "EOS":
             continue
         word_list.append(item[0])
 
@@ -67,13 +67,13 @@ def main():
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
-    data = get_list_tweet()
-    text = unicodedata.normalize("NFKC", data)
+    list_tweet = get_list_tweet()
+    text = unicodedata.normalize("NFKC", list_tweet)
     word = get_word(text)
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
-                   prefer_horizontal=0.7, scale=4, colormap="Set3").generate(word)
+                   prefer_horizontal=0.85, scale=4, colormap="Set3", collocations=False).generate(word)
     wc.to_file("./img/" + DATE + ".png")
 
 
