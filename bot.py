@@ -25,7 +25,10 @@ def follow_back(api):
 
     # フォローされているアカウントをフォロー
     for i in range(len(follower_list)):
-        api.create_friendship(user_id=follower_list[i])
+        try:
+            api.create_friendship(user_id=follower_list[i])
+        except tweepy.errors.Forbidden:
+            continue
 
 
 def main():
