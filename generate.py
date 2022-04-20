@@ -36,9 +36,8 @@ def get_tweet():
             break
 
     tweet = " ".join(tweet_list)
-    count = len(tweet_list)
 
-    return tweet, count
+    return tweet
 
 
 # 形態素解析
@@ -59,50 +58,20 @@ def get_word(text):
     return word
 
 
-def post_tweet(date, api, count):
-    # 画像のパスを取得
-    img = "./img/" + date + ".png"
-
-    # 年月日のフォーマットを変更
-    date = date.replace("_0", "_")
-    date = date.split("_")
-    date = date[0] + "年" + date[1] + "月" + date[2] + "日" + date[3] + "時"
-
-    # ツイート
-    text = date + "のWord Cloudです\n" + str(count) + "件のツイートを解析しました"
-    api.update_status_with_media(text, filename=img)
-
-
-def follow_back(api):
-    # フォローしているユーザーを取得
-    follower_list = api.get_follower_ids(count=1000)
-
-    # フォローしているユーザーをフォロー
-    for i in range(len(follower_list)):
-        api.create_friendship(user_id=follower_list[i])
-
-
 def main():
     load_dotenv()
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
-    # Twitter
-    auth = tweepy.OAuthHandler(os.environ["CK"], os.environ["CS"])
-    auth.set_access_token(os.environ["AT"], os.environ["ATS"])
-    api = tweepy.API(auth)
 
-    data, count = get_tweet()
+    data = get_tweet()
     text = unicodedata.normalize("NFKC", data)
     word = get_word(text)
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
-                   prefer_horizontal=0.7, scale=4, colormap="Set3").generate_from_text(word)
+                   prefer_horizontal=0.7, scale=4, colormap="Set3").generate(word)
     wc.to_file("./img/" + DATE + ".png")
-
-    # post_tweet(DATE, api, count)
-    # follow_back(api)
 
 
 if __name__ == "__main__":
