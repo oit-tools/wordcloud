@@ -18,7 +18,7 @@ jobs:
           echo "CK=${{ secrets.CK }}" >> .env
           echo "CS=${{ secrets.CS }}" >> .env
           echo "AT=${{ secrets.AT }}" >> .env
-          echo "ATS=${{ secrets.ATS }}" >> .env
+          echo "AS=${{ secrets.AS }}" >> .env
           echo "BT=${{ secrets.BT }}" >> .env
 
       - name: Setup Python
