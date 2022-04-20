@@ -92,17 +92,17 @@ def main():
     auth.set_access_token(os.environ["AT"], os.environ["ATS"])
     api = tweepy.API(auth)
 
-    data , count = get_tweet()
+    data, count = get_tweet()
     text = unicodedata.normalize("NFKC", data)
     word = get_word(text)
 
     # Word Cloud
-    wc = WordCloud(font_path=FONT_PATH, width=1000, height=800,
-                   background_color="white",scale=2).generate(word)
+    wc = WordCloud(font_path=FONT_PATH, background_color="black",
+                   prefer_horizontal=0.7, scale=4, colormap="Set3").generate_from_text(word)
     wc.to_file("./img/" + DATE + ".png")
 
-    post_tweet(DATE, api, count)
-    follow_back(api)
+    # post_tweet(DATE, api, count)
+    # follow_back(api)
 
 
 if __name__ == "__main__":
