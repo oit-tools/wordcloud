@@ -21,11 +21,6 @@ jobs:
           echo "ATS=${{ secrets.ATS }}" >> .env
           echo "BT=${{ secrets.BT }}" >> .env
 
-      - name: Set current datetime as env variable
-        env:
-          TZ: 'Asia/Tokyo'
-        run: echo "CURRENT_DATETIME=$(date +'%Y_%m_%d_%H')" >> $GITHUB_ENV
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
