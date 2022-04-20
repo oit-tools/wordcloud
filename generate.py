@@ -12,6 +12,7 @@ def get_tweet():
     tweet_list = list()
     token = None
     client = tweepy.Client(bearer_token=os.environ["BT"])
+    NG = ["人", "こと", "時間", "やつ"]
 
     while True:
         tweets = client.get_list_tweets(
@@ -21,6 +22,8 @@ def get_tweet():
             data = (tweets[0][i].text)
             if "RT" in data:  # RTを除外
                 continue
+            for ng in NG:
+                data = re.sub(ng, "", data)  # NGワードを除外
             data = re.sub(r"[\n\u3000]", "", data)  # 改行と全角スペースを除外
             data = re.sub(r"http\S+", "", data)  # URLを除外
             data = re.sub(r"@\S+", "", data)  # @を除外
