@@ -164,6 +164,6 @@ cython_debug/
 
 # My Rule
 html/
-img/
+img/*.png
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
