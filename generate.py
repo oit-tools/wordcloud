@@ -12,7 +12,7 @@ def get_list_tweet():
     tweet_list = list()
     token = None
     client = tweepy.Client(bearer_token=os.environ["BT"])
-    NG = ["人", "こと", "時間", "やつ"]
+    NG = ["人", "こと", "時間", "やつ", "日", "時"]
     TWITTER_LIST_ID = "1238737475306020865"
 
     while True:
