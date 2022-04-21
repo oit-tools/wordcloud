@@ -70,8 +70,8 @@ def main():
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
-    list_tweet, count = get_list_tweet()
-    text = unicodedata.normalize("NFKC", list_tweet)
+    tweet, count = get_list_tweet()
+    text = unicodedata.normalize("NFKC", tweet)
     word = get_word(text)
 
     # Word Cloud
