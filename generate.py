@@ -31,7 +31,7 @@ def get_list_tweet():
             data = re.sub(r"#\S+", "", data)  # #を除外
             tweet_list.append(data)
 
-            if len(tweet_list) >= 200:
+            if len(tweet_list) >= 100:
                 break
 
         try:
