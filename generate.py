@@ -12,7 +12,7 @@ def get_list_tweet():
     tweet_list = list()
     token = None
     client = tweepy.Client(bearer_token=os.environ["BT"])
-    NG = ["人", "こと", "時間", "やつ", "日", "時"]
+    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない"]
     TWITTER_LIST_ID = "1238737475306020865"
 
     while True:
@@ -31,7 +31,7 @@ def get_list_tweet():
             data = re.sub(r"#\S+", "", data)  # #を除外
             tweet_list.append(data)
 
-            if len(tweet_list) >= 150:
+            if len(tweet_list) >= 200:
                 break
 
         try:
