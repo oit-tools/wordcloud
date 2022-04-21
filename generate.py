@@ -13,10 +13,11 @@ def get_list_tweet():
     token = None
     client = tweepy.Client(bearer_token=os.environ["BT"])
     NG = ["人", "こと", "時間", "やつ"]
+    TWITTER_LIST_ID = "1238737475306020865"
 
     while True:
         tweets = client.get_list_tweets(
-            id="1238737475306020865", pagination_token=token)
+            id=TWITTER_LIST_ID, pagination_token=token)
 
         for i in range(len(tweets[0])):
             data = (tweets[0][i].text)
@@ -39,8 +40,9 @@ def get_list_tweet():
             break
 
     tweet = " ".join(tweet_list)
+    count = len(tweet_list)
 
-    return tweet
+    return tweet, count
 
 
 # 形態素解析
@@ -48,11 +50,12 @@ def get_word(text):
     parse = MeCab.Tagger().parse(text)
     lines = parse.splitlines()
     word_list = list()
+    HINSHI = ["名詞", "形容動詞", "形容詞"]
 
     for line in lines:
         item = re.split("[\t,]", line)
         # 名詞のみ保存
-        if (len(item) >= 2 and item[1] not in ["名詞", "形容詞", "形容動詞"]) or item[0] == "EOS":
+        if (len(item) >= 2 and item[1] not in HINSHI) or item[0] == "EOS":
             continue
         word_list.append(item[0])
 
@@ -67,14 +70,17 @@ def main():
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
-    list_tweet = get_list_tweet()
+    list_tweet, count = get_list_tweet()
     text = unicodedata.normalize("NFKC", list_tweet)
     word = get_word(text)
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
-                   prefer_horizontal=0.85, scale=4, colormap="Set3", collocations=False).generate(word)
+                   prefer_horizontal=0.85, scale=4, colormap="Set3",
+                   collocations=False).generate(word)
     wc.to_file("./img/" + DATE + ".png")
+
+    return count
 
 
 if __name__ == "__main__":
