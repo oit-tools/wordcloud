@@ -29,7 +29,7 @@ def get_list_tweet():
             data = re.sub(r"[\n\u3000]", "", data)  # 改行と全角スペースを除外
             data = re.sub(r"http\S+", "", data)  # URLを除外
             data = re.sub(r"@\S+", "", data)  # @を除外
-            data = re.sub(r"#\S+", "", data)  # #を除外
+            # data = re.sub(r"#\S+", "", data)  # #を除外
             tweet_list.append(data)
 
             if len(tweet_list) >= 100:
@@ -77,7 +77,7 @@ def main():
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
-                   prefer_horizontal=0.85, scale=4, colormap="Set3",
+                   prefer_horizontal=0.85, colormap="Set3",
                    collocations=False, height=1080, width=1920).generate(word)
     wc.to_file("./img/" + DATE + ".png")
 
