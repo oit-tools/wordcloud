@@ -78,7 +78,7 @@ def main():
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
                    prefer_horizontal=0.85, scale=4, colormap="Set3",
-                   collocations=False).generate(word)
+                   collocations=False, height=1080, width=1920).generate(word)
     wc.to_file("./img/" + DATE + ".png")
 
     return count
