@@ -72,8 +72,8 @@ def main():
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
     post_tweet(count, DATE, api)
-    follow_back(api)
-    add_list()
+    # follow_back(api)
+    # add_list()
 
 
 if __name__ == "__main__":
