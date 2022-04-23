@@ -29,7 +29,7 @@ def get_list_tweet():
             data = re.sub(r"[\n\u3000]", "", data)  # 改行と全角スペースを除外
             data = re.sub(r"http\S+", "", data)  # URLを除外
             data = re.sub(r"@\S+", "", data)  # @を除外
-            # data = re.sub(r"#\S+", "", data)  # #を除外
+            data = re.sub(r"#\S+", "", data)  # #を除外
             tweet_list.append(data)
 
             if len(tweet_list) >= 100:

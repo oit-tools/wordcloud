@@ -73,7 +73,7 @@ def main():
 
     post_tweet(count, DATE, api)
     # follow_back(api)
-    # add_list()
+    add_list()
 
 
 if __name__ == "__main__":
