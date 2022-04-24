@@ -37,13 +37,13 @@ def add_list():
     client = tweepy.Client(bearer_token=os.environ["BT"], consumer_key=os.environ["CK"],
                            consumer_secret=os.environ["CS"], access_token=os.environ["AT"],
                            access_token_secret=os.environ["AS"])
-    following_list = list()
+    followers_list = list()
     member_list = list()
 
     # フォローしているアカウントのIDを取得
-    following = client.get_users_following(id=OITWORDCLOUD_ID)
-    for i in range(len(following[0])):
-        following_list.append(following[0][i].id)
+    followers = client.get_users_followers(id=OITWORDCLOUD_ID)
+    for i in range(len(followers[0])):
+        followers_list.append(followers[0][i].id)
 
     # リストのメンバーのIDを取得
     member = client.get_list_members(id=OIT_LIST_ID)
@@ -51,7 +51,7 @@ def add_list():
         member_list.append(member[0][i].id)
 
     # フォローしているアカウントがリストに含まれていない場合はリストに追加
-    unlisted = list(set(following_list) - set(member_list))
+    unlisted = list(set(followers_list) - set(member_list))
 
     # リストに追加
     for i in range(len(unlisted)):
