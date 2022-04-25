@@ -11,6 +11,7 @@ import unicodedata
 def get_tweets():
     word_list = list()
     token = None
+    count = 0
     client = tweepy.Client(bearer_token=os.environ["BT"])
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
@@ -31,6 +32,7 @@ def get_tweets():
             text = re.sub(r"http\S+", "", text)  # URLを除外
             text = re.sub(r"@\S+", "", text)  # @を除外
             text = re.sub(r"#\S+", "", text)  # #を除外
+            count += 1 # ツイート数のカウント
 
             # 形態素解析
             text_list = word_analysis(text)
@@ -40,7 +42,7 @@ def get_tweets():
 
             word_list.extend(text_list)
 
-            if len(word_list) >= 100:
+            if count >= 100:
                 break
 
         try:
@@ -49,7 +51,6 @@ def get_tweets():
             break
 
     word = " ".join(word_list)
-    count = len(word_list)
 
     return word, count
 
