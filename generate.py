@@ -22,15 +22,23 @@ def get_list_tweet():
 
         for i in range(len(tweets[0])):
             data = (tweets[0][i].text)
-            if "RT" in data:  # RTを除外
+            text = unicodedata.normalize("NFKC", data)
+            if "RT" in text:  # RTを除外
                 continue
             for ng in NG:
-                data = re.sub(ng, "", data)  # NGワードを除外
-            data = re.sub(r"[\n\u3000]", "", data)  # 改行と全角スペースを除外
-            data = re.sub(r"http\S+", "", data)  # URLを除外
-            data = re.sub(r"@\S+", "", data)  # @を除外
-            data = re.sub(r"#\S+", "", data)  # #を除外
-            tweet_list.append(data)
+                text = re.sub(ng, "", text)  # NGワードを除外
+            text = re.sub(r"[\n\u3000]", "", text)  # 改行と全角スペースを除外
+            text = re.sub(r"http\S+", "", text)  # URLを除外
+            text = re.sub(r"@\S+", "", text)  # @を除外
+            text = re.sub(r"#\S+", "", text)  # #を除外
+
+            # 形態素解析
+            word_list = word_analysis(text)
+
+            # 単語の重複排除
+            word_list = list(set(word_list))
+
+            tweet_list.extend(word_list)
 
             if len(tweet_list) >= 100:
                 break
@@ -41,13 +49,13 @@ def get_list_tweet():
             break
 
     tweet = " ".join(tweet_list)
-    count = len(tweet_list)
+    count = len(word_list)
 
     return tweet, count
 
 
 # 形態素解析
-def get_word(text):
+def word_analysis(text):
     parse = MeCab.Tagger().parse(text)
     lines = parse.splitlines()
     word_list = list()
@@ -60,9 +68,7 @@ def get_word(text):
             continue
         word_list.append(item[0])
 
-    word = " ".join(word_list)
-
-    return word
+    return word_list
 
 
 def main():
@@ -71,9 +77,7 @@ def main():
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
-    tweet, count = get_list_tweet()
-    text = unicodedata.normalize("NFKC", tweet)
-    word = get_word(text)
+    word, count = get_list_tweet()
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
