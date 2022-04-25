@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 import unicodedata
 
 
-def get_list_tweet():
-    tweet_list = list()
+def get_tweets():
+    word_list = list()
     token = None
     client = tweepy.Client(bearer_token=os.environ["BT"])
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
@@ -21,8 +21,8 @@ def get_list_tweet():
             id=TWITTER_LIST_ID, pagination_token=token)
 
         for i in range(len(tweets[0])):
-            data = (tweets[0][i].text)
-            text = unicodedata.normalize("NFKC", data)
+            text = (tweets[0][i].text)
+            text = unicodedata.normalize("NFKC", text)
             if "RT" in text:  # RTを除外
                 continue
             for ng in NG:
@@ -33,14 +33,14 @@ def get_list_tweet():
             text = re.sub(r"#\S+", "", text)  # #を除外
 
             # 形態素解析
-            word_list = word_analysis(text)
+            text_list = word_analysis(text)
 
             # 単語の重複排除
-            word_list = list(set(word_list))
+            text_list = list(set(text_list))
 
-            tweet_list.extend(word_list)
+            word_list.extend(text_list)
 
-            if len(tweet_list) >= 100:
+            if len(word_list) >= 100:
                 break
 
         try:
@@ -48,10 +48,10 @@ def get_list_tweet():
         except KeyError:
             break
 
-    tweet = " ".join(tweet_list)
+    word = " ".join(word_list)
     count = len(word_list)
 
-    return tweet, count
+    return word, count
 
 
 # 形態素解析
@@ -77,7 +77,7 @@ def main():
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
-    word, count = get_list_tweet()
+    word, count = get_tweets()
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
