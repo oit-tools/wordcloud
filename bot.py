@@ -10,8 +10,8 @@ def post_tweet(count, date, api):
     img = "./img/" + date + ".png"
 
     # 年月日のフォーマットを変更
-    date = date.replace("_0", "_")
-    date = date.split("_")
+    date = date.replace("_0", "_") # 無駄な0を削除
+    date = date.split("_") # 年月日に分割
     date = date[0] + "年" + date[1] + "月" + date[2] + "日" + date[3] + "時"
 
     # ツイート
@@ -32,34 +32,34 @@ def follow_back(api):
 
 
 def add_list():
-    OITWORDCLOUD_ID = "1516397750317117441"
-    OIT_LIST_ID = "1516921724033728512"
+    OITWC_ACCOUNT_ID = "1516397750317117441"
+    OITWC_LIST_ID = "1516921724033728512"
     client = tweepy.Client(bearer_token=os.environ["BT"], consumer_key=os.environ["CK"],
                            consumer_secret=os.environ["CS"], access_token=os.environ["AT"],
                            access_token_secret=os.environ["AS"])
-    followers_list = list()
+    following_list = list()
     member_list = list()
 
     # フォローしているアカウントのIDを取得
-    followers = client.get_users_followers(id=OITWORDCLOUD_ID)
-    for i in range(len(followers[0])):
-        followers_list.append(followers[0][i].id)
+    following = client.get_users_following(id=OITWC_ACCOUNT_ID)
+    for i in range(len(following[0])):
+        following_list.append(following[0][i].id)
 
     # リストのメンバーのIDを取得
-    member = client.get_list_members(id=OIT_LIST_ID)
+    member = client.get_list_members(id=OITWC_LIST_ID)
     for i in range(len(member[0])):
         member_list.append(member[0][i].id)
 
     # フォローしているアカウントがリストに含まれていない場合はリストに追加
-    unlisted = list(set(followers_list) - set(member_list))
+    unlisted = list(set(following_list) - set(member_list))
 
     # リストに追加
     for i in range(len(unlisted)):
-        client.add_list_member(id=OIT_LIST_ID, user_id=unlisted[i])
+        client.add_list_member(id=OITWC_LIST_ID, user_id=unlisted[i])
 
 
 def main():
-    # Word Cloudを生成
+    # Word Cloudを生成し、解析ツイート数を取得
     count = generate.main()
 
     # APIキーの読み込み
@@ -68,11 +68,12 @@ def main():
     auth.set_access_token(os.environ["AT"], os.environ["AS"])
     api = tweepy.API(auth)
 
+    # 年月日と時刻を取得
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
 
     post_tweet(count, DATE, api)
-    # follow_back(api)
+    # follow_back(api) # 現在不使用
     add_list()
 
 
