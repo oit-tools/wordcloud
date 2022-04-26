@@ -13,7 +13,7 @@ def get_tweets():
     token = None
     count = 0
     client = tweepy.Client(bearer_token=os.environ["BT"])
-    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
+    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今","ー"]
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
     OITWC_LIST_ID = "1516921724033728512"  # OIT
     GET_TWEET_LIMIT = 100  # 取得するツイートの上限
@@ -44,9 +44,9 @@ def get_tweets():
             # リストに追加
             word_list.extend(text_list)
 
-        # ツイート取得数が上限に達したらループを抜ける
-        if count >= GET_TWEET_LIMIT:
-            break
+            # ツイート取得数が上限に達したらループを抜ける
+            if count >= GET_TWEET_LIMIT:
+                break
 
         # ツイート取得数が上限に達していない場合は次のページを取得
         try:
