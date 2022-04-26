@@ -1,0 +1,51 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.0.3
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.10.1
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+
+      - run:
+          name: Install dependencies
+          command: |
+            python -m pip install --upgrade pip
+            pip install -r ./requirements.txt
+            python -m unidic download
+
+      - run:
+          name: Create dot env file
+          shell: bash
+          command: |
+            touch .env
+            echo "CK=$CK" >> .env
+            echo "CS=$CS" >> .env
+            echo "AT=$AT" >> .env
+            echo "AS=$AS" >> .env
+            echo "BT=$BT" >> .env
+
+      - run:
+          name: Run bot.py
+          command: python ./bot.py
+
+workflows:
+  version: 2
+  BOT:
+
+    triggers:
+      - schedule:
+          cron: "0 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+
+    jobs:
+      - build:
+          context: API
