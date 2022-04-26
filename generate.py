@@ -15,17 +15,17 @@ def get_tweets():
     client = tweepy.Client(bearer_token=os.environ["BT"])
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
-    TWITTER_LIST_ID = "1516921724033728512"  # OIT
-    GET_TWEET_LIMIT = 100 # 取得するツイートの上限
+    OITWC_LIST_ID = "1516921724033728512"  # OIT
+    GET_TWEET_LIMIT = 100  # 取得するツイートの上限
 
     while True:
         tweets = client.get_list_tweets(
-            id=TWITTER_LIST_ID, pagination_token=token)
+            id=OITWC_LIST_ID, pagination_token=token)
 
         for i in range(len(tweets[0])):
             text = (tweets[0][i].text)
-            text = unicodedata.normalize("NFKC", text)
-            if "RT" in text:  # RTを除外
+            text = unicodedata.normalize("NFKC", text)  # 正規化
+            if "RT" in text:  # リツイートを除外
                 continue
             for ng in NG:
                 text = re.sub(ng, "", text)  # NGワードを除外
@@ -33,7 +33,7 @@ def get_tweets():
             text = re.sub(r"http\S+", "", text)  # URLを除外
             text = re.sub(r"@\S+", "", text)  # @を除外
             text = re.sub(r"#\S+", "", text)  # #を除外
-            count += 1 # ツイート数のカウント
+            count += 1  # ツイート数のカウント
 
             # 形態素解析
             text_list = word_analysis(text)
@@ -41,16 +41,20 @@ def get_tweets():
             # 単語の重複排除
             text_list = list(set(text_list))
 
+            # リストに追加
             word_list.extend(text_list)
 
-            if count >= GET_TWEET_LIMIT:
-                break
+        # ツイート取得数が上限に達したらループを抜ける
+        if count >= GET_TWEET_LIMIT:
+            break
 
+        # ツイート取得数が上限に達していない場合は次のページを取得
         try:
             token = ((tweets[3])["next_token"])
         except KeyError:
             break
 
+    # リストを1つの文字列に変換
     word = " ".join(word_list)
 
     return word, count
