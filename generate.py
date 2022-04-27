@@ -13,7 +13,7 @@ def get_tweets():
     token = None
     count = 0
     client = tweepy.Client(bearer_token=os.environ["BT"])
-    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今","ー"]
+    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
     OITWC_LIST_ID = "1516921724033728512"  # OIT
     GET_TWEET_LIMIT = 100  # 取得するツイートの上限
