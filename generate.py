@@ -29,10 +29,8 @@ def get_tweets():
                 continue
             for ng in NG:
                 text = re.sub(ng, "", text)  # NGワードを除外
-            text = re.sub(r"[\n\u3000]", "", text)  # 改行と全角スペースを除外
-            text = re.sub(r"http\S+", "", text)  # URLを除外
-            text = re.sub(r"@\S+", "", text)  # @を除外
-            text = re.sub(r"#\S+", "", text)  # #を除外
+            # 改行、全角スペース、URL、メンション、ハッシュタグを除外
+            text = re.sub(r"\n|\u3000|http\S+|@\S+|#\S+", "", text)
             count += 1  # ツイート数のカウント
 
             # 形態素解析
@@ -65,7 +63,7 @@ def word_analysis(text):
     parse = MeCab.Tagger().parse(text)
     lines = parse.splitlines()
     word_list = list()
-    HINSHI = ["名詞", "形容動詞", "形容詞"]
+    HINSHI = ["名詞", "形容詞", "形容動詞"]
 
     for line in lines:
         item = re.split("[\t,]", line)
