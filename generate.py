@@ -13,7 +13,6 @@ def get_tweets():
     token = None
     count = 0
     client = tweepy.Client(bearer_token=os.environ["BT"])
-    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
     OITWC_LIST_ID = "1516921724033728512"  # OIT
     GET_TWEET_LIMIT = 100  # 取得するツイートの上限
@@ -27,8 +26,6 @@ def get_tweets():
             text = unicodedata.normalize("NFKC", text)  # 正規化
             if "RT" in text:  # リツイートを除外
                 continue
-            for ng in NG:
-                text = re.sub(ng, "", text)  # NGワードを除外
             # 改行、全角スペース、URL、メンション、ハッシュタグを除外
             text = re.sub(r"\n|\u3000|http\S+|@\S+|#\S+", "", text)
             count += 1  # ツイート数のカウント
@@ -80,13 +77,15 @@ def main():
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
+    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
 
     word, count = get_tweets()
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
                    prefer_horizontal=0.85, colormap="Set3",
-                   collocations=False, height=1080, width=1920).generate(word)
+                   collocations=False, height=1080, width=1920,
+                   stopwords=set(NG)).generate(word)
     wc.to_file("./img/" + DATE + ".png")
 
     return count
