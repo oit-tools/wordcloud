@@ -40,7 +40,7 @@ generate.pyを動作させるとツイートを自動で取得し、形態素解
 Tweetの取得は
 [Tweepy](https://github.com/tweepy/tweepy)
 を使用し、取得先のリストは
-[これ](https://twitter.com/i/lists/1238737475306020865)
+[これ](https://twitter.com/i/lists/1516921724033728512)
 を利用。  
 形態素解析は
 [MeCab](https://github.com/taku910/mecab)
