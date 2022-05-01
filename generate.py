@@ -6,6 +6,7 @@ import tweepy
 import os
 from dotenv import load_dotenv
 import unicodedata
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def get_tweets():
@@ -36,8 +37,11 @@ def get_tweets():
             # 単語の重複排除
             text_list = list(set(text_list))
 
+            # リストを1つの文字列に変換
+            word = " ".join(text_list)
+
             # リストに追加
-            word_list.extend(text_list)
+            word_list.append(word)
 
             # ツイート取得数が上限に達したらループを抜ける
             if count >= GET_TWEET_LIMIT:
@@ -49,10 +53,7 @@ def get_tweets():
         except KeyError:
             break
 
-    # リストを1つの文字列に変換
-    word = " ".join(word_list)
-
-    return word, count
+    return word_list, count
 
 
 # 形態素解析
@@ -72,6 +73,16 @@ def word_analysis(text):
     return word_list
 
 
+def tfidf(word_list):
+    vectorizer = TfidfVectorizer(use_idf=True, token_pattern=u"(?u)\\b\\w+\\b")
+    vecs = vectorizer.fit_transform(word_list)
+    # 辞書に変換
+    word = dict(zip(vectorizer.get_feature_names_out(),
+                vecs.toarray().sum(axis=0)))
+
+    return word
+
+
 def main():
     load_dotenv()
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
@@ -79,13 +90,14 @@ def main():
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
 
-    word, count = get_tweets()
+    word_list, count = get_tweets()
+    word = tfidf(word_list)
 
     # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
                    prefer_horizontal=0.85, colormap="Set3",
                    collocations=False, height=1080, width=1920,
-                   stopwords=set(NG)).generate(word)
+                   stopwords=set(NG)).generate_from_frequencies(word)
     wc.to_file("./img/" + DATE + ".png")
 
     return count
