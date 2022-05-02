@@ -16,7 +16,7 @@ def get_tweets():
     client = tweepy.Client(bearer_token=os.environ["BT"])
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
     OITWC_LIST_ID = "1516921724033728512"  # OIT
-    GET_TWEET_LIMIT = 100  # 取得するツイートの上限
+    GET_TWEET_LIMIT = 150  # 取得するツイートの上限
 
     while True:
         tweets = client.get_list_tweets(
@@ -29,7 +29,6 @@ def get_tweets():
                 continue
             # 改行、全角スペース、URL、メンション、ハッシュタグを除外
             text = re.sub(r"\n|\u3000|http\S+|@\S+|#\S+", "", text)
-            count += 1  # ツイート数のカウント
 
             # 形態素解析
             text_list = word_analysis(text)
@@ -40,10 +39,15 @@ def get_tweets():
             # リストを1つの文字列に変換
             word = " ".join(text_list)
 
+            # もし単語が空ならば次のツイートへ
+            if word == "":
+                continue
+
             # リストに追加
             word_list.append(word)
 
             # ツイート取得数が上限に達したらループを抜ける
+            count += 1
             if count >= GET_TWEET_LIMIT:
                 break
 
@@ -73,32 +77,41 @@ def word_analysis(text):
     return word_list
 
 
+# TF-IDFの計算
 def tfidf(word_list):
     vectorizer = TfidfVectorizer(use_idf=True, token_pattern=u"(?u)\\b\\w+\\b")
-    vecs = vectorizer.fit_transform(word_list)
-    # 辞書に変換
-    word = dict(zip(vectorizer.get_feature_names_out(),
-                vecs.toarray().sum(axis=0)))
+    vec = vectorizer.fit_transform(word_list)
+    vec_list = list()
+
+    for i in range(len(vec.toarray())):
+        vec_sum = sum(vec.toarray()[i])
+        vec_list.append(vec_sum)
+
+    word = dict(zip(vectorizer.get_feature_names_out(), vec_list))
 
     return word
 
 
-def main():
-    load_dotenv()
+# WordCloudの生成
+def wordcloud(word):
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
-
-    word_list, count = get_tweets()
-    word = tfidf(word_list)
-
-    # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
                    prefer_horizontal=0.85, colormap="Set3",
                    collocations=False, height=1080, width=1920,
                    stopwords=set(NG)).generate_from_frequencies(word)
     wc.to_file("./img/" + DATE + ".png")
+
+
+def main():
+    # 環境変数の読み込み
+    load_dotenv()
+
+    word_list, count = get_tweets()
+    word = tfidf(word_list)
+    wordcloud(word)
 
     return count
 
