@@ -22,33 +22,34 @@ def get_tweets():
             id=OITWC_LIST_ID, pagination_token=token)
 
         for i in range(len(tweets[0])):
+            # ツイートの文字列を取得
             text = (tweets[0][i].text)
-            text = unicodedata.normalize("NFKC", text)  # 正規化
-            if "RT" in text:  # リツイートを除外
+            # 正規化
+            text = unicodedata.normalize("NFKC", text)
+            # リツイートを除外
+            if "RT" in text:
                 continue
             # 改行、全角スペース、URL、メンション、ハッシュタグを除外
             text = re.sub(r"\n|\u3000|http\S+|@\S+|#\S+", "", text)
-            count += 1  # ツイート数のカウント
-
             # 形態素解析
             text_list = word_analysis(text)
-
             # 単語の重複排除
             text_list = list(set(text_list))
-
             # リストに追加
             word_list.extend(text_list)
-
+            # 空の要素を削除
+            if len(text_list) == 0:
+                continue
+            # ツイート数のカウント
+            count += 1
             # ツイート取得数が上限に達したらループを抜ける
             if count >= GET_TWEET_LIMIT:
                 break
-
         # ツイート取得数が上限に達していない場合は次のページを取得
         try:
             token = ((tweets[3])["next_token"])
         except KeyError:
             break
-
     # リストを1つの文字列に変換
     word = " ".join(word_list)
 
@@ -57,14 +58,16 @@ def get_tweets():
 
 # 形態素解析
 def word_analysis(text):
+    # パーサーを作成
     parse = MeCab.Tagger().parse(text)
+    # 改行で分割
     lines = parse.splitlines()
     word_list = list()
+    # 残したい品詞を指定
     HINSHI = ["名詞", "形容詞", "形容動詞"]
 
     for line in lines:
         item = re.split("[\t,]", line)
-        # 名詞のみ保存
         if (len(item) >= 2 and item[1] not in HINSHI) or item[0] == "EOS":
             continue
         word_list.append(item[0])
@@ -72,21 +75,30 @@ def word_analysis(text):
     return word_list
 
 
-def main():
-    load_dotenv()
+# Word Cloud
+def wordcloud(word):
+    # フォントを指定
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
+    # 現在時刻を取得
     DATE = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
+    # NGワードを指定
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
 
-    word, count = get_tweets()
-
-    # Word Cloud
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
                    prefer_horizontal=0.85, colormap="Set3",
                    collocations=False, height=1080, width=1920,
                    stopwords=set(NG)).generate(word)
     wc.to_file("./img/" + DATE + ".png")
+
+
+def main():
+    # 環境変数の読み込み
+    load_dotenv()
+
+    # ツイートの取得とWord Cloudの生成
+    word, count = get_tweets()
+    wordcloud(word)
 
     return count
 
