@@ -40,7 +40,7 @@ workflows:
 
     triggers:
       - schedule:
-          cron: "0 0-16/2 * * *" # 9~25時の間で2時間おきに実行(JST)
+          cron: "0 0,2,4,6,8,10,12,14,16 * * *" # 9~25時の間で2時間おきに実行(JST)
           filters:
             branches:
               only:
