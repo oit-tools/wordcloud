@@ -1,6 +1,6 @@
-# OIT Word Cloud
+# OIT WordCloud
 
-generate.pyでWord Cloudを生成し、bot.pyで自動投稿を行います。  
+generate.pyでWordCloudを生成し、bot.pyで自動投稿を行います。  
 bot.pyを動作させるためにはTwitter API v1(Elevated Access)が必要です。  
 
 **各自でBearer tokenを用意してください**  
@@ -47,8 +47,8 @@ Tweetの取得は
 と
 [UniDic](https://clrd.ninjal.ac.jp/unidic/)
 を使用。  
-Word Cloud生成には
-[Word Cloud](https://github.com/amueller/word_cloud)
+WordCloud生成には
+[WordCloud](https://github.com/amueller/word_cloud)
 を使用し、フォントには
 [UDEV Gothic](https://github.com/yuru7/udev-gothic)
 を使用。
