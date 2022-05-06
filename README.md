@@ -1,10 +1,12 @@
 # OIT WordCloud
 
 generate.pyでWordCloudを生成し、bot.pyで自動投稿を行います。  
-bot.pyを動作させるためにはTwitter API v1(Elevated Access)が必要です。  
+以下の記事を参考にTwitter Developerアカウントの登録をしてください。  
+[【2022年】TwitterAPI v2 の仕様まとめ・セットアップ方法](https://zenn.dev/mamushi/articles/twitter_api_v2_setup#2.-developer-%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E7%99%BB%E9%8C%B2%EF%BC%88essential%E5%88%A9%E7%94%A8%EF%BC%89=)
 
-**各自でBearer tokenを用意してください**  
-[Twitter API v2の申請とBearer tokenの取得方法](https://wporz.com/twitterapi-apikey-accesstoken/)
+bot.pyを動作させるためにはTwitter API v1(Elevated Access)が必要です。  
+[先程の記事](https://zenn.dev/mamushi/articles/twitter_api_v2_setup#3.-elevated-%E3%83%97%E3%83%A9%E3%83%B3%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E6%96%B9%E6%B3%95=)
+を参考に申請してください。
 
 ## Usage
 
