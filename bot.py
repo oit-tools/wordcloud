@@ -5,14 +5,13 @@ import os
 import datetime
 
 
-def post_tweet(count, date, api):
+def post_tweet(count, path, api):
     # 画像のパスを取得
-    img = "./img/" + date + ".png"
+    img = "./img/" + path + ".png"
 
-    # 年月日のフォーマットを変更
-    date = date.replace("_0", "_") # 無駄な0を削除
-    date = date.split("_") # 年月日に分割
-    date = date[0] + "年" + date[1] + "月" + date[2] + "日" + date[3] + "時"
+    # 年月日と時刻を取得
+    date = datetime.datetime.now(datetime.timezone(
+        datetime.timedelta(hours=+9))).strftime("%Y年%m月%d日%H時")
 
     # ツイート
     text = date + "のWord Cloudです\n" + str(count) + "件のツイートを解析しました"
@@ -60,7 +59,7 @@ def add_list():
 
 def main():
     # Word Cloudを生成し、解析ツイート数を取得
-    count = generate.main()
+    count, path = generate.main()
 
     # APIキーの読み込み
     load_dotenv()
@@ -68,11 +67,7 @@ def main():
     auth.set_access_token(os.environ["AT"], os.environ["AS"])
     api = tweepy.API(auth)
 
-    # 年月日と時刻を取得
-    DATE = datetime.datetime.now(datetime.timezone(
-        datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
-
-    post_tweet(count, DATE, api)
+    post_tweet(count, path, api)
     # follow_back(api) # 現在不使用
     add_list()
 

@@ -1,6 +1,6 @@
 import MeCab
 from wordcloud import WordCloud
-import datetime
+import uuid
 import re
 import tweepy
 import os
@@ -76,12 +76,10 @@ def word_analysis(text):
 
 
 # Word Cloud
-def wordcloud(word):
+def wordcloud(word, path):
     # フォントを指定
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
-    # 現在時刻を取得
-    DATE = datetime.datetime.now(datetime.timezone(
-        datetime.timedelta(hours=+9))).strftime("%Y_%m_%d_%H")
+
     # NGワードを指定
     NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今"]
 
@@ -89,18 +87,20 @@ def wordcloud(word):
                    prefer_horizontal=0.85, colormap="Set3",
                    collocations=False, height=1080, width=1920,
                    stopwords=set(NG)).generate(word)
-    wc.to_file("./img/" + DATE + ".png")
+    wc.to_file("./img/" + path + ".png")
 
 
 def main():
     # 環境変数の読み込み
     load_dotenv()
 
+    path = str(uuid.uuid4())
+
     # ツイートの取得とWord Cloudの生成
     word, count = get_tweets()
-    wordcloud(word)
+    wordcloud(word, path)
 
-    return count
+    return count, path
 
 
 if __name__ == "__main__":
