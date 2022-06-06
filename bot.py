@@ -14,7 +14,7 @@ def post_tweet(count, path, api):
         datetime.timedelta(hours=+9))).strftime("%Y年%m月%d日%H時")
 
     # ツイート
-    text = date + "のWord Cloudです\n" + str(count) + "件のツイートを解析しました"
+    text = date + "のWordCloudです\n" + str(count) + "件のツイートを解析しました"
     api.update_status_with_media(text, filename=img)
 
 
