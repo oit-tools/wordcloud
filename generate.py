@@ -35,11 +35,11 @@ def get_tweets():
             text_list = word_analysis(text)
             # 単語の重複排除
             text_list = list(set(text_list))
-            # リストに追加
-            word_list.extend(text_list)
             # 空の要素を削除
             if len(text_list) == 0:
                 continue
+            # リストに追加
+            word_list.extend(text_list)
             # ツイート数のカウント
             count += 1
             # ツイート取得数が上限に達したらループを抜ける
