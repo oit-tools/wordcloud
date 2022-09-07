@@ -1,7 +1,7 @@
-name: "word cloud"
+name: "wordcloud"
 on:
   schedule:
-    - cron: "0 * * * *" #毎時0分に実行
+    - cron: "59 2 * * *" # 1日昼12時に1回投稿(JST)
 
 jobs:
   build:
@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Create dot env file
         shell: bash
@@ -22,9 +22,9 @@ jobs:
           echo "BT=${{ secrets.BT }}" >> .env
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.9"
 
       - name: Install dependencies
         run: |
