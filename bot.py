@@ -7,15 +7,16 @@ import datetime
 
 def post_tweet(count, path, api):
     # 画像のパスを取得
-    img = "./img/" + path + ".png"
+    img = f"./img/{path}.png"
 
-    # 年月日と時刻を取得
-    date = datetime.datetime.now(datetime.timezone(
-        datetime.timedelta(hours=+9))).strftime("%Y年%m月%d日%H時")
+    # # 年月日と時刻を取得
+    # date = datetime.datetime.now(datetime.timezone(
+    #     datetime.timedelta(hours=+9))).strftime("%Y年%m月%d日%H時")
+    # # テキストを生成
+    # text = date + "のWordCloudです\n" + str(count) + "件のツイートを解析しました"
 
     # ツイート
-    text = date + "のWordCloudです\n" + str(count) + "件のツイートを解析しました"
-    api.update_status_with_media(text, filename=img)
+    api.update_status_with_media(filename=img)
 
 
 def follow_back(api):
