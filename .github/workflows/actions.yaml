@@ -1,7 +1,7 @@
 name: "wordcloud"
 on:
   schedule:
-    - cron: "59 2 * * *" # 1日昼12時に1回投稿(JST)
+    - cron: "0 2 * * *" # 1日昼12時に1回投稿(JST)
 
 jobs:
   build:
