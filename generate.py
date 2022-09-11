@@ -81,7 +81,7 @@ def wordcloud(word, path):
     FONT_PATH = "./font/UDEVGothic-Bold.ttf"
 
     # NGワードを指定
-    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今", "いい", "笑", "笑笑", "匿名", "募集"]
+    NG = ["人", "こと", "時間", "やつ", "日", "時", "分", "ない", "気", "今", "いい", "笑", "笑笑", "匿名", "募集", "みんな", "質問"]
 
     wc = WordCloud(font_path=FONT_PATH, background_color="black",
                    prefer_horizontal=0.85, colormap="Set3",
