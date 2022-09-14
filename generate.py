@@ -15,7 +15,6 @@ def get_tweets():
     client = tweepy.Client(bearer_token=os.environ["BT"])
     # TWITTER_LIST_ID = "1238737475306020865" # oit(たぶん枚方のみ)
     OITWC_LIST_ID = "1516921724033728512"  # OIT
-    GET_TWEET_LIMIT = 100  # 取得するツイートの上限
 
     while True:
         tweets = client.get_list_tweets(
@@ -40,11 +39,6 @@ def get_tweets():
                 continue
             # リストに追加
             word_list.extend(text_list)
-            # ツイート数のカウント
-            count += 1
-            # ツイート取得数が上限に達したらループを抜ける
-            if count >= GET_TWEET_LIMIT:
-                break
         # ツイート取得数が上限に達していない場合は次のページを取得
         try:
             token = ((tweets[3])["next_token"])
