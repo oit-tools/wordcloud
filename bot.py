@@ -13,11 +13,8 @@ def post_tweet(count, path, api):
     date = datetime.datetime.now(datetime.timezone(
         datetime.timedelta(hours=+9))).strftime("%Y年%m月%d日")
 
-    # テキストを生成
-    text = date + "のWordCloudです\n" + str(count) + "件のツイートを解析しました"
-
     # ツイート
-    api.update_status_with_media(text, filename=img)
+    api.update_status_with_media(date, filename=img)
 
 
 def follow_back(api):
