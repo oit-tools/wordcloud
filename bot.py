@@ -6,15 +6,8 @@ import datetime
 
 
 def post_tweet(count, path, api):
-    # 画像のパスを取得
-    img = f"./img/{path}.png"
-
-    # # 年月日と時刻を取得
-    date = datetime.datetime.now(datetime.timezone(
-        datetime.timedelta(hours=+9))).strftime("%Y年%m月%d日")
-
     # ツイート
-    api.update_status_with_media(date, filename=img)
+    api.update_status_with_media("", filename=f"./img/{path}.png")
 
 
 def follow_back(api):
